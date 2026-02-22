@@ -14,9 +14,14 @@ static func Unregister(commandName : StringName):
 	commands.erase(commandName)
 
 static func Handle(caller : PlayerAgent, commandStr : String):
+	if commandStr.is_empty():
+		Network.CommandFeedback("Empty command sent", caller.peerID)
+		return
+
 	var args : Array = Parse(commandStr)
 	if args.is_empty():
 		Network.CommandFeedback("Invalid command sent", caller.peerID)
+		return
 
 	var commandName : StringName = args.pop_front().to_lower()
 	var command : Command = commands.get(commandName, null)

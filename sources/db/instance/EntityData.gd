@@ -21,6 +21,7 @@ class_name EntityData
 @export var _spawns : Dictionary[int, int]		= {}
 @export var _questID : int						= ProgressCommons.Quest.UNKNOWN
 @export var _questState : int					= ProgressCommons.UnknownProgress
+@export var _questStateMax : int				= ProgressCommons.UnknownProgress
 
 const hashedStats : PackedStringArray			= ["race", "skintone", "hairstyle", "haircolor"]
 
@@ -89,6 +90,11 @@ static func Create(result : Dictionary) -> EntityData:
 	if "QuestFilter" in result:
 		for questName in result.QuestFilter:
 			entity._questID = ProgressCommons.Quest.get(questName, ProgressCommons.Quest.UNKNOWN)
-			entity._questState = ProgressCommons.GetQuestStateID(entity._questID, result.QuestFilter[questName])
+			var questValue : Variant = result.QuestFilter[questName]
+			if questValue is Array and questValue.size() == 2:
+				entity._questState = ProgressCommons.GetQuestStateID(entity._questID, questValue[0])
+				entity._questStateMax = ProgressCommons.GetQuestStateID(entity._questID, questValue[1])
+			else:
+				entity._questState = ProgressCommons.GetQuestStateID(entity._questID, questValue)
 
 	return entity

@@ -194,6 +194,7 @@ You must include a link to https://github.com/sourceofmana in your credits along
 ./graphics/items/chest/leather-shirt.png [VxD] [Reid]
 ./graphics/items/chest/tanktop.png [VxD] [Reid]
 ./graphics/items/chest/vnecktee.png [VxD] [Reid]
+./graphics/items/commons/treasure-key.png [Hal9000] [Reid]
 ./graphics/items/commons/splatina-key1.png [Reid]
 ./graphics/items/commons/splatina-key2.png [Reid]
 ./graphics/items/commons/splatina-key3.png [Reid]

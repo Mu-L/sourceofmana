@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://cnpafioewxbag"]
 
-[ext_resource type="Texture2D" uid="uid://dw5ppjee83tck" path="res://data/graphics/default.png" id="1_8rucx"]
 [ext_resource type="PackedScene" uid="uid://btojurpsnh3pq" path="res://presets/entities/sprites/animations/1Direction.tscn" id="2_6w5rt"]
 
 [sub_resource type="Animation" id="Animation_38rnv"]
@@ -154,7 +153,6 @@ _data = {
 [node name="Chest" type="Node2D" unique_id=195182728]
 
 [node name="Body" type="Sprite2D" parent="." unique_id=1781100429]
-texture = ExtResource("1_8rucx")
 offset = Vector2(0, -28)
 
 [node name="Animation" type="AnimationPlayer" parent="." unique_id=336869200]

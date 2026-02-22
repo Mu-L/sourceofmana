@@ -577,7 +577,7 @@
   <object id="41" name="Old Chest" type="Spawn" x="1968" y="1340" width="23" height="21">
    <properties>
     <property name="count" type="int" value="1"/>
-    <property name="own_script" value="splatyna/ChestGlobal.gd"/>
+    <property name="own_script" value="generic/ChestGlobal.gd"/>
     <property name="player_script" value="splatyna/Chest.gd"/>
     <property name="type" value="Npc"/>
    </properties>

@@ -286,6 +286,7 @@ const MonsterTextColor : Color				= Color.DARK_SALMON
 
 # Interactive
 const interactionDisplayOffset : int		= 32
+const selectionRadius : int					= 24
 const emoteDelay : float					= 4.0
 const morphDelay : float					= 1.2
 const speechDelay : float					= 6.0

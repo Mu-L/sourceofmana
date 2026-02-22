@@ -94,7 +94,7 @@ func CommandGoto(caller : PlayerAgent, agentName : String) -> bool:
 	return false
 
 # Modifiers
-func CommandGodmode(caller : PlayerAgent, toggleStr : String):
+func CommandGodmode(caller : PlayerAgent, toggleStr : String) -> bool:
 	if not caller:
 		return false
 

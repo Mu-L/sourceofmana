@@ -108,6 +108,9 @@ func IsQuestStarted(questID : int) -> bool:
 func IsQuestCompleted(questID : int) -> bool:
 	return GetQuest(questID) == ProgressCommons.CompletedProgress
 
+func GetState(questID : int) -> Variant:
+	return ProgressCommons.QuestStates.get(questID)
+
 # Display
 func Notification(text : String):
 	if not IsPlayer(): return
