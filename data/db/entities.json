@@ -4,7 +4,7 @@
 		"SpritePreset": "Player",
 		"Behaviour": ["None"],
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "20",
 		"DisplayName": true,
 		"Stat": {
 			"walkSpeed": 160,
@@ -15,7 +15,7 @@
 		"SpritePreset": "Ship",
 		"Behaviour": ["None"],
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "16",
 		"Stat": {
 			"walkSpeed": 20,
 			"attack": 0,
@@ -59,7 +59,7 @@
 		"SpritePreset": "Splatyna",
 		"Behaviour": ["Aggressive", "Leader", "Spawner"],
 		"Collision": "Large",
-		"Radius": "32",
+		"Radius": "26",
 		"DisplayName": true,
 		"Stat": {
 			"walkSpeed": 50,
@@ -169,7 +169,7 @@
 		"Name": "Piou",
 		"SpritePreset": "Piou",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "8",
 		"Stat": {
 			"walkSpeed": 30,
 		},
@@ -191,7 +191,7 @@
 		"Texture": "sprites/monsters/skull-fire.png",
 		"Behaviour": ["Aggressive"],
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "12",
 		"Stat": {
 			"walkSpeed": 50,
 			"level": 10,
@@ -236,7 +236,7 @@
 		"Name": "Croc",
 		"SpritePreset": "Croc",
 		"Collision": "Medium",
-		"Radius": "12",
+		"Radius": "10",
 		"Stat": {
 			"walkSpeed": 80,
 			"attack": 10,
@@ -247,7 +247,7 @@
 		"Name": "Bat",
 		"SpritePreset": "Bat",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "12",
 		"Stat": {
 			"walkSpeed": 100,
 			"attack": 5,
@@ -259,7 +259,7 @@
 		"SpritePreset": "Generic4Directions",
 		"Behaviour": ["Aggressive"],
 		"Collision": "Medium",
-		"Radius": "5",
+		"Radius": "16",
 		"Texture": "sprites/monsters/snake.png",
 		"Stat": {
 			"walkSpeed": 170,
@@ -270,7 +270,7 @@
 		"Name": "Fluffy",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "16",
 		"Texture": "sprites/monsters/fluffy.png",
 		"Stat": {
 			"walkSpeed": 50,
@@ -290,7 +290,7 @@
 		"Name": "Fire Goblin",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "16",
 		"Texture": "sprites/monsters/firegoblin.png",
 		"SkillSet": {
 			"Spitfire": 2.0,
@@ -303,7 +303,7 @@
 		"Name": "Spiky Mushroom",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "16",
 		"Texture": "sprites/monsters/mushroom-spiky.png",
 		"Stat": {
 			"walkSpeed": 80,
@@ -313,7 +313,7 @@
 		"Name": "Evil Mushroom",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "16",
 		"Texture": "sprites/monsters/mushroom-evil.png",
 		"Stat": {
 			"walkSpeed": 80,
@@ -323,7 +323,7 @@
 		"Name": "Pinkie",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "20",
+		"Radius": "12",
 		"Texture": "sprites/monsters/pinkie.png",
 		"Stat": {
 			"walkSpeed": 80,
@@ -333,7 +333,7 @@
 		"Name": "Giant Maggot",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Large",
-		"Radius": "70",
+		"Radius": "25",
 		"Texture": "sprites/monsters/maggot-giant.png",
 		"Stat": {
 			"walkSpeed": 80,
@@ -343,7 +343,7 @@
 		"Name": "Scorpion",
 		"SpritePreset": "Generic4Directions",
 		"Collision": "Medium",
-		"Radius": "30",
+		"Radius": "18",
 		"Texture": "sprites/monsters/scorpion.png",
 		"Stat": {
 			"walkSpeed": 60,
@@ -353,7 +353,7 @@
 		"Name": "Skeleton",
 		"SpritePreset": "Player",
 		"Collision": "Medium",
-		"Radius": "16",
+		"Radius": "20",
 		"Texture": "sprites/monsters/skeleton.png",
 		"Stat": {
 			"walkSpeed": 80,
@@ -363,7 +363,7 @@
 		"Name": "Bird",
 		"SpritePreset": "Bird",
 		"Collision": "Medium",
-		"Radius": "16",
+		"Radius": "20",
 		"Stat": {
 			"walkSpeed": 200,
 			"castAttackDelay": 0.1,
@@ -394,7 +394,7 @@
 		"SpritePreset": "Generic4Directions",
 		"Behaviour": ["Aggressive"],
 		"Collision": "Medium",
-		"Radius": "5",
+		"Radius": "16",
 		"Texture": "sprites/monsters/snake.png",
 		"Material": "Snake Sand",
 		"Stat": {
@@ -407,7 +407,7 @@
 		"SpritePreset": "Lynx",
 		"Behaviour": ["Aggressive"],
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "24",
 		"SkillSet": {
 			"Sonic Wave": 10.0,
 		},
@@ -421,7 +421,7 @@
 		"SpritePreset": "Peyote",
 		"Behaviour": ["Immobile", "Pacifist"],
 		"Collision": "Medium",
-		"Radius": "10",
+		"Radius": "14",
 		"Drops": {
 			"Cactus Drink": 0.1,
 		},
@@ -447,7 +447,7 @@
 		"Parent" : "StaticObject",
 		"SpritePreset": "Chest",
 		"Collision": "Large",
-		"Radius": "32",
+		"Radius": "26",
 	},
 	"2002": {
 		"Name": "Elanore",
@@ -459,7 +459,7 @@
 		"Parent" : "StaticObject",
 		"SpritePreset": "CaveLocks",
 		"Collision": "Large",
-		"Radius": "32",
+		"Radius": "26",
 	},
 	"2004": {
 		"Name": "Gabz",

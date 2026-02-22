@@ -23,7 +23,8 @@ func DisplaySelection(hue : float, alpha : float = 1.0):
 		add_child(selectionFx)
 
 		if selectionFx and ActorCommons.interactionDisplayOffset > 0:
-			var sizeRatio : float = float(visualOffset) / float(ActorCommons.interactionDisplayOffset)
+			var targetRadius : int = entity.data._radius if entity.data else ActorCommons.selectionRadius
+			var sizeRatio : float = float(targetRadius) / float(ActorCommons.selectionRadius)
 			var emissionShapeScale : Vector3 = selectionFx.process_material.get("emission_shape_scale")
 			if emissionShapeScale != Vector3.ZERO:
 				emissionShapeScale *= sizeRatio
