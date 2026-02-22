@@ -620,4 +620,20 @@
 			"skintone": "Fire",
 		},
 	},
+	"2018": {
+		"Name": "Snake Pit Clue",
+		"Parent": "StaticObject",
+		"Radius": "8",
+		"DisplayName": false,
+		"QuestFilter": {"SNAKE_PIT_THIEF": ["INACTIVE", "ALL_CLUES_FOUND"]},
+	},
+	"2019": {
+		"Name": "Thiefs Chest",
+		"Parent": "StaticObject",
+		"SpritePreset": "Chest",
+		"Collision": "Large",
+		"Radius": "26",
+		"DisplayName": false,
+		"QuestFilter": {"SNAKE_PIT_THIEF": "RIDDLE_SOLVED"},
+	},
 }
