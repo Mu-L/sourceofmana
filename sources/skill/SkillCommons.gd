@@ -103,10 +103,18 @@ static func IsNotSelf(agent : BaseAgent, target : BaseAgent) -> bool:
 
 static func IsNear(agent : BaseAgent, target : BaseAgent, skillRange : int) -> bool:
 	var filteredRange : float = skillRange + agent.entityRadius + target.entityRadius
-	return WorldNavigation.GetDistanceSquared(agent, target.position) <= filteredRange * filteredRange
+	var distanceSquared : float = 0.0
+	if not target.agent:
+		distanceSquared = WorldNavigation.GetPathLengthSquared(agent, target.position)
+	else:
+		distanceSquared = WorldNavigation.GetDistanceSquared(agent, target.position)
+	return distanceSquared <= filteredRange * filteredRange
 
 static func IsSameMap(agent : BaseAgent, target : BaseAgent) -> bool:
 	return WorldAgent.GetMapFromAgent(agent) == WorldAgent.GetMapFromAgent(target)
+
+static func IsSameInstance(agent : BaseAgent, target : BaseAgent) -> bool:
+	return WorldAgent.GetInstanceFromAgent(agent) == WorldAgent.GetInstanceFromAgent(target)
 
 static func IsAttackable(agent : BaseAgent, target : BaseAgent, skill : SkillCell) -> bool:
 	return IsInteractable(agent, target) and IsNear(agent, target, GetRange(agent, skill))
@@ -115,7 +123,7 @@ static func IsTargetable(agent : BaseAgent, target : BaseAgent) -> bool:
 	return IsInteractable(agent, target) and IsNear(agent, target, ActorCommons.TargetMaxDistance)
 
 static func IsInteractable(agent : BaseAgent, target : BaseAgent) -> bool:
-	return IsNotSelf(agent, target) and ActorCommons.IsAlive(target) and IsSameMap(agent, target)
+	return IsNotSelf(agent, target) and ActorCommons.IsAlive(target) and IsSameInstance(agent, target)
 
 static func CanCast(agent : BaseAgent) -> bool:
 	return agent.currentSkillID != DB.UnknownHash and not DB.SkillsDB[agent.currentSkillID].castWalk

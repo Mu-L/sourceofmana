@@ -138,14 +138,14 @@ static func ToAttack(agent : AIAgent, target : BaseAgent):
 
 static func ToChase(agent : AIAgent, target : BaseAgent):
 	var map : WorldMap = WorldAgent.GetMapFromAgent(agent)
-	if map and SkillCommons.IsSameMap(agent, target):
+	if map and SkillCommons.IsSameInstance(agent, target):
 		agent.SetNodeGoal(target, target.position)
 		Callback.OneShotCallback(agent.agent.navigation_finished, AI.Refresh, [agent])
 		agent.currentWalkSpeed = Vector2(agent.stat.current.walkSpeed, agent.stat.current.walkSpeed)
 
 static func ToFlee(agent : AIAgent, target : BaseAgent):
 	var map : WorldMap = WorldAgent.GetMapFromAgent(agent)
-	if map and SkillCommons.IsSameMap(agent, target):
+	if map and SkillCommons.IsSameInstance(agent, target):
 		var fleePosition : Vector2 = agent.position - agent.position.direction_to(target.position) * AICommons.FleeDistance
 		SetState(agent, AICommons.State.WALK, true)
 		agent.SetNodeGoal(target, fleePosition)

@@ -604,9 +604,9 @@
 		"Texture": "sprites/npcs/riskim.png",
 	},
 	"2016": {
-		"Name": "Floor Barrel",
+		"Name": "Flour Barrel",
 		"Parent" : "StaticObject",
-		"Texture": "sprites/npcs/floor-barrel.png",
+		"Texture": "sprites/npcs/flour-barrel.png",
 		"DisplayName": false,
 		"QuestFilter": {"GRAIN_IN_THE_SAND": "STARTED"},
 	},

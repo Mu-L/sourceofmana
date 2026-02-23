@@ -31,7 +31,8 @@ static func GetDistanceSquared(agent : BaseAgent, pos : Vector2) -> float:
 	var pathLengthSquared : float = GetPathLengthSquared(agent, pos)
 	if pathLengthSquared != INF:
 		var distLengthSquared : float = Vector2.ZERO.distance_squared_to((agent.position - pos) * SkillCommons.PerspectiveIncrease)
-		return INF if (distLengthSquared - pathLengthSquared) > ActorCommons.MismatchPathSquaredThreshold else pathLengthSquared
+		if (distLengthSquared - pathLengthSquared) > ActorCommons.MismatchPathSquaredThreshold:
+			pathLengthSquared = INF
 	return pathLengthSquared
 
 # Utils

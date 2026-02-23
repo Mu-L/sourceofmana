@@ -313,7 +313,7 @@ const PickupSquaredDistance : float			= 48 * 48 # 1.5 Tile squared length
 const MaxStatValue : int					= 1 << 32
 const MaxPointPerAttributes : int			= 20
 const InventorySize : int					= 100
-const RunningStaminaCostPerSecond : int		= 15
+const RunningStaminaCostPerSecond : int		= 10
 
 static func IsEquipped(cell : BaseCell) -> bool:
 	return cell and cell is ItemCell and \

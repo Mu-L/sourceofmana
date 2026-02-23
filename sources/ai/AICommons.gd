@@ -97,7 +97,7 @@ static func GetRandomSkill(agent : AIAgent) -> SkillCell:
 	return null
 
 static func HasExpiredNodeGoal(agent : AIAgent):
-	return agent.hasNodeGoal and (agent.nodeGoal == null or (agent.nodeGoal is BaseAgent and not (ActorCommons.IsAlive(agent.nodeGoal) and SkillCommons.IsSameMap(agent, agent.nodeGoal))))
+	return agent.hasNodeGoal and (agent.nodeGoal == null or (agent.nodeGoal is BaseAgent and not (ActorCommons.IsAlive(agent.nodeGoal) and SkillCommons.IsSameInstance(agent, agent.nodeGoal))))
 
 # Behaviour
 static func ApplyPacifistBehaviour(agent : AIAgent) -> bool:

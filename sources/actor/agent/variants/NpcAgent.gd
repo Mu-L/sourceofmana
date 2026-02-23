@@ -17,7 +17,7 @@ func Interact(player : Actor):
 		return
 
 	if not player.ownScript:
-		if SkillCommons.IsTargetable(self, player):
+		if SkillCommons.IsTargetable(player, self):
 			player.AddScript(self)
 	else:
 		if player.ownScript.IsWaiting():
