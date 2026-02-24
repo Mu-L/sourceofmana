@@ -10,16 +10,18 @@ class_name ChatContainer
 var enabledLastFrame : bool						= false
 
 #
-func AddPlayerText(playerName : String, speech : String):
-	AddText(playerName, UICommons.PlayerNameToColor(playerName))
-	AddText(": " + speech + "\n", UICommons.LightTextColor)
+func AddPlayerText(channelID : GUICommons.ChatChannel, playerName : String, speech : String):
+	AddText(channelID, playerName, UICommons.PlayerNameToColor(playerName))
+	AddText(channelID, ": " + speech + "\n", UICommons.LightTextColor)
 
 func AddSystemText(speech : String):
-	AddText(speech + "\n", UICommons.TextColor)
+	AddText(GUICommons.ChatChannel.Local, speech + "\n", UICommons.TextColor)
 
-func AddText(speech : String, color : Color):
-	if tabContainer && tabContainer.get_current_tab_control():
-		tabContainer.get_current_tab_control().text += "[color=#" + color.to_html(false) + "]" + speech + "[/color]"
+func AddText(channelID : GUICommons.ChatChannel, speech : String, color : Color):
+	if tabContainer:
+		var tab : Control = tabContainer.get_tab_control(channelID)
+		if tab and tab is RichTextLabel:
+			tab.text += "[color=#" + color.to_html(false) + "]" + speech + "[/color]"
 
 func isNewLineEnabled() -> bool:
 	return lineEdit.is_visible() and lineEdit.has_focus() if lineEdit else false
@@ -43,7 +45,7 @@ func OnNewTextSubmitted(newText : String):
 				if newText[0] == "/":
 					Network.TriggerCommand(newText.trim_prefix("/"))
 				else:
-					Network.TriggerChat(newText)
+					Network.TriggerChat(newText, tabContainer.get_current_tab())
 				SetNewLineEnabled(false)
 		else:
 			SetNewLineEnabled(false)

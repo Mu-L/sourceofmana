@@ -197,8 +197,18 @@ func TriggerRespawn(peerID : int):
 func TriggerEmote(emoteID : int, peerID : int):
 	Network.NotifyNeighbours(Peers.GetAgent(peerID), "EmotePlayer", [emoteID])
 
-func TriggerChat(text : String, peerID : int):
-	Network.NotifyNeighbours(Peers.GetAgent(peerID), "ChatAgent", [text])
+func TriggerChat(text : String, channelID : GUICommons.ChatChannel, peerID : int):
+	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if player:
+		match channelID:
+			GUICommons.ChatChannel.Local:
+				Network.NotifyNeighbours(player, "ChatAgent", [text])
+			GUICommons.ChatChannel.Global:
+				Network.NotifyGlobal("ChatGlobal", [player.nick, text])
+				if Launcher.Discord:
+					Launcher.Discord.SendToDiscord(player.nick, text)
+			_:
+				assert(false, "Unsupported chat channel ID (%s)" % channelID)
 
 func TriggerChoice(choiceID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)

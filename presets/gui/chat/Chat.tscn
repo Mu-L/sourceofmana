@@ -37,9 +37,14 @@ theme = ExtResource("1_qmu1c")
 current_tab = 0
 drag_to_rearrange_enabled = true
 
-[node name="General" parent="Margin/VBoxContainer/ChatTabContainer" unique_id=1625154428 instance=ExtResource("4_eypvk")]
+[node name="Local" parent="Margin/VBoxContainer/ChatTabContainer" unique_id=1625154428 instance=ExtResource("4_eypvk")]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="Global" parent="Margin/VBoxContainer/ChatTabContainer" unique_id=1410534613 instance=ExtResource("4_eypvk")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="NewText" type="LineEdit" parent="Margin/VBoxContainer" unique_id=1138611423]
 layout_mode = 2

@@ -15,6 +15,7 @@ var Map : ServiceBase				= null
 # Server services
 var World : ServiceBase				= null
 var SQL : ServiceBase				= null
+var Discord : ServiceBase			= null
 
 # Accessors
 var Player : Entity					= null
@@ -53,9 +54,11 @@ func Client():
 func Server():
 	World			= FileSystem.LoadSource("world/World.gd", "World")
 	SQL				= FileSystem.LoadSource("sql/SQL.gd", "SQL")
+	Discord			= FileSystem.LoadSource("discord/Discord.gd", "Discord")
 
 	add_child.call_deferred(World)
 	add_child.call_deferred(SQL)
+	add_child.call_deferred(Discord)
 
 func Reset(clientStarted : bool, serverStarted : bool):
 	if not clientStarted:
@@ -103,6 +106,11 @@ func Reset(clientStarted : bool, serverStarted : bool):
 			SQL.Destroy()
 			SQL.queue_free()
 			SQL = null
+		if Discord:
+			Discord.set_name("DiscordDestroyed")
+			Discord.Destroy()
+			Discord.queue_free()
+			Discord = null
 
 func Quit():
 	Reset(false, false)
@@ -152,6 +160,7 @@ func _post_launch():
 	if Debug and not Debug.isInitialized:		Debug._post_launch()
 	if World and not World.isInitialized:		World._post_launch()
 	if SQL and not SQL.isInitialized:			SQL._post_launch()
+	if Discord and not Discord.isInitialized:	Discord._post_launch()
 	if Audio:									Audio._post_launch()
 
 func _quit():

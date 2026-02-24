@@ -143,8 +143,12 @@ func TriggerRun(enable : bool, peerID : int = NetworkCommons.PeerAuthorityID):
 
 # Chat
 @rpc("any_peer", "call_remote", "reliable", EChannel.ACTION)
-func TriggerChat(text : String, peerID : int = NetworkCommons.PeerAuthorityID):
-	CallServer("TriggerChat", [text], peerID)
+func TriggerChat(text : String, channelID : GUICommons.ChatChannel, peerID : int = NetworkCommons.PeerAuthorityID):
+	CallServer("TriggerChat", [text, channelID], peerID)
+
+@rpc("authority", "call_remote", "reliable", EChannel.ACTION)
+func ChatGlobal(agentName : String, text : String, peerID : int = NetworkCommons.PeerOfflineID):
+	CallClient("ChatGlobal", [agentName, text], peerID)
 
 @rpc("authority", "call_remote", "reliable", EChannel.ACTION)
 func ChatAgent(agentRID : int, text : String, peerID : int = NetworkCommons.PeerOfflineID):
