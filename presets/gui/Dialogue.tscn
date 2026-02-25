@@ -12,7 +12,7 @@
 [node name="Dialogue" type="VBoxContainer" unique_id=554568421]
 custom_minimum_size = Vector2(676, 280)
 offset_right = 676.0
-offset_bottom = 364.0
+offset_bottom = 384.0
 mouse_filter = 2
 theme = ExtResource("1_w0q73")
 script = ExtResource("1_xbnx6")
@@ -29,9 +29,9 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="Dialogue" type="PanelContainer" parent="BottomVbox" unique_id=1889534427]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 3
 theme_type_variation = &"DialogueBox"
 
 [node name="FixedHBox" type="HBoxContainer" parent="BottomVbox/Dialogue" unique_id=1663083452]
@@ -42,7 +42,6 @@ mouse_filter = 2
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_5qyvn")
 
@@ -84,7 +83,6 @@ vertical_alignment = 1
 [node name="ChoiceVbox" type="VBoxContainer" parent="BottomVbox" unique_id=1701815967]
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
-size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="BufferUp" type="Control" parent="BottomVbox/ChoiceVbox" unique_id=1484291609]
