@@ -2,6 +2,7 @@ extends ServiceBase
 
 # Discord bot instance
 var bot : DiscordBot			= null
+var regex : RegEx				= null
 
 # Configuration
 var botToken : String			= ""
@@ -10,6 +11,10 @@ var enabled : bool				= false
 
 # State
 var isBotReady : bool			= false
+
+# Constants
+const IRCBridgePrefix : String	= "IRC-Bridge"
+const IRCBridgeRegex : String	= r"^\*\*<(?<user>[^>]+)>\*\*\s*(?<msg>.+)$"
 
 # Overrides
 func _post_launch():
@@ -40,6 +45,9 @@ func _ready():
 		Util.PrintInfo("Discord", "Discord bot not configured")
 		return
 
+	regex = RegEx.new()
+	regex.compile(IRCBridgeRegex)
+
 	bot = DiscordBot.new()
 	bot.name = "DiscordBot"
 	bot.TOKEN = botToken
@@ -65,7 +73,16 @@ func _on_message_create(_bot : DiscordBot, message : Message, _channel : Diction
 	if not isBotReady or _bot != bot or message.author.id == bot.user.id or message.channel_id != channelID or message.content.is_empty():
 		return
 
-	Network.NotifyGlobal("ChatGlobal", [message.author.username, message.content])
+	var username : String = message.author.username
+	var content : String = message.content
+
+	if username == IRCBridgePrefix:
+		var result : RegExMatch = regex.search(content)
+		if result:
+			username = result.get_string("user")
+			content = result.get_string("msg")
+
+	Network.NotifyGlobal("ChatGlobal", [username, content])
 
 # Utils
 func SendToDiscord(playerName : String, messageText : String):

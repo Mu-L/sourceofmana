@@ -775,7 +775,7 @@ func _on_guild_member_update_event(member: Dictionary) -> void:
 		var pending = member.pending
 		member.erase('pending')
 		member.is_pending = pending
-	guild.members[user_id] = member
+	guild.users[user_id] = member
 
 
 func _on_message_create_event(msg: Dictionary) -> void:
