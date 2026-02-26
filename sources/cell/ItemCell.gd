@@ -1,3 +1,4 @@
+@tool
 extends BaseCell
 class_name ItemCell
 

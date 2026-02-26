@@ -1,32 +1,92 @@
+@tool
 extends Resource
 class_name EntityData
+
+# Parent entity for inheritance (avoids duplication in .tres files)
+@export var _parent : EntityData				= null
 
 @export var _id : int							= DB.UnknownHash
 @export var _name : String 						= ""
 @export var _spritePreset : String				= ""
 @export var _collision : String					= ""
 @export var _radius : int						= 0
+@export var _stats : Dictionary					= ActorCommons.DefaultStats.duplicate()
+@export_category("Visual")
 @export var _equipment : Array[ItemCell]		= []
 @export var _customTexture : String				= ""
 @export var _customMaterial : FileData			= null
 @export var _displayName : bool					= false
 @export var _direction : ActorCommons.Direction	= ActorCommons.Direction.UNKNOWN
 @export var _state : ActorCommons.State			= ActorCommons.State.UNKNOWN
+@export_category("Skills")
 @export var _behaviour : AICommons.Behaviour	= AICommons.Behaviour.NEUTRAL
-@export var _stats : Dictionary					= ActorCommons.DefaultStats.duplicate()
 @export var _skillSet : PackedInt64Array		= []
 @export var _skillProba : Dictionary[int, float]= {}
+@export_category("Drops")
 @export var _drops : PackedInt64Array			= []
 @export var _dropsProba : Dictionary[int, float]= {}
 @export var _spawns : Dictionary[int, int]		= {}
+@export_category("Quests")
 @export var _questID : int						= ProgressCommons.Quest.UNKNOWN
 @export var _questState : int					= ProgressCommons.UnknownProgress
-@export var _questStateMax : int				= ProgressCommons.UnknownProgress
+@export var _questStateMax : int				= ProgressCommons.CompletedProgress
 
 const hashedStats : PackedStringArray			= ["race", "skintone", "hairstyle", "haircolor"]
 
 func _init():
 	_equipment.resize(ActorCommons.SlotEquipmentCount)
+
+# Merge with parent to get final values (used when loading from .tres with parent references)
+func GetMergedEntity() -> EntityData:
+	if not _parent:
+		return self
+
+	# Recursively merge parent (in case parent also has a parent)
+	var merged : EntityData = _parent.GetMergedEntity().duplicate(true)
+
+	merged._id = _id if _id != DB.UnknownHash else merged._id
+	merged._name = _name if _name != "" else merged._name
+	merged._spritePreset = _spritePreset if _spritePreset != "" else merged._spritePreset
+	merged._collision = _collision if _collision != "" else merged._collision
+	merged._radius = _radius if _radius != 0 else merged._radius
+	merged._customTexture = _customTexture if _customTexture != "" else merged._customTexture
+	merged._customMaterial = _customMaterial if _customMaterial != null else merged._customMaterial
+	merged._displayName = _displayName if _displayName != false else merged._displayName
+	merged._direction = _direction if _direction != ActorCommons.Direction.UNKNOWN else merged._direction
+	merged._state = _state if _state != ActorCommons.State.UNKNOWN else merged._state
+	merged._behaviour = _behaviour if _behaviour != AICommons.Behaviour.NEUTRAL else merged._behaviour
+
+	# Stats
+	for stat_key in _stats:
+		merged._stats[stat_key] = _stats[stat_key]
+
+	# Equipments
+	for i in _equipment.size():
+		if _equipment[i] != null:
+			merged._equipment[i] = _equipment[i]
+
+	# Skills
+	if not _skillSet.is_empty() or not _skillProba.is_empty():
+		if not _skillSet.is_empty():
+			merged._skillSet = _skillSet.duplicate()
+		if not _skillProba.is_empty():
+			merged._skillProba = _skillProba.duplicate()
+	for spawn_key in _spawns:
+		merged._spawns[spawn_key] = _spawns[spawn_key]
+
+	# Drops
+	if not _drops.is_empty() or not _dropsProba.is_empty():
+		if not _drops.is_empty():
+			merged._drops = _drops.duplicate()
+		if not _dropsProba.is_empty():
+			merged._dropsProba = _dropsProba.duplicate()
+
+	# Quest
+	merged._questID = _questID if _questID != ProgressCommons.Quest.UNKNOWN else merged._questID
+	merged._questState = _questState if _questState != ProgressCommons.UnknownProgress else merged._questState
+	merged._questStateMax = _questStateMax if _questStateMax != ProgressCommons.UnknownProgress else merged._questStateMax
+
+	return merged
 
 static func Create(result : Dictionary) -> EntityData:
 	var parent : EntityData = null

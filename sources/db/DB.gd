@@ -73,12 +73,25 @@ static func ParsePalettesDB():
 				PalettesDB[categoryIdx][id] = FileData.Create(key, category[key])
 
 static func ParseEntitiesDB():
-	var result = FileSystem.LoadDB("entities.json")
+	for resourcePath in FileSystem.ParseResources(Path.EntityPst):
+		var resource = FileSystem.LoadResource(resourcePath, false)
+		if resource is EntityData:
+			var entity : EntityData = resource as EntityData
+			if entity._parent:
+				entity = entity.GetMergedEntity()
 
-	if not result.is_empty():
-		for key in result:
-			var entity : EntityData = EntityData.Create(result[key])
-			EntitiesDB[entity._id] = entity
+			for stat_name in EntityData.hashedStats:
+				if entity._stats.has(stat_name):
+					var value = entity._stats[stat_name]
+					if value is String:
+						entity._stats[stat_name] = value.hash()
+
+			if entity._stats.has("gender") and entity._stats["gender"] is String:
+				entity._stats["gender"] = ActorCommons.GetGenderID(entity._stats["gender"])
+
+			if entity._id != UnknownHash:
+				assert(not EntitiesDB.has(entity._id), "Duplicated entity in EntitiesDB: " + entity._name)
+				EntitiesDB[entity._id] = entity
 
 static func ParseEmotesDB():
 	for resourcePath in FileSystem.ParseResources(Path.EmotePst):
@@ -97,7 +110,9 @@ static func ParseItemsDB():
 static func ParseSkillsDB():
 	for resourcePath in FileSystem.ParseResources(Path.SkillPst):
 		var cell : SkillCell = FileSystem.LoadResource(resourcePath, false)
-		cell.Instantiate()
+		# Only instantiate packed scenes when running the game, not in the editor
+		if not Engine.is_editor_hint():
+			cell.Instantiate()
 		cell.id = SetCellHash(cell.name)
 		assert(SkillsDB.has(cell.id) == false, "Duplicated cell in SkillsDB")
 		SkillsDB[cell.id] = cell
