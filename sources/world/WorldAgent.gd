@@ -96,7 +96,7 @@ static func CreateAgent(spawn : SpawnObject, instanceID : int = 0, nickname : St
 	# Fallback to the spawn_position if the spawn area is less or equal to one pixel squared
 	var position : Vector2 = spawn.spawn_position
 	if spawn.spawn_offset.length_squared() > 2.0:
-		WorldNavigation.GetSpawnPosition(spawn.map, spawn)
+		position = WorldNavigation.GetSpawnPosition(spawn.map, spawn)
 	if Vector2i(position) == Vector2i.ZERO:
 		return null
 
