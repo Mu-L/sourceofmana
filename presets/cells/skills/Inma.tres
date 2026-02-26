@@ -34,6 +34,7 @@ castPreset = ExtResource("1_0ywhq")
 castTime = 3.0
 skillPreset = ExtResource("5_0vmmd")
 skillTime = 2.0
+id = 2089220490
 name = "Inma"
 description = "Provide a light healing touch to allies or creatures."
 icon = ExtResource("3_jylje")

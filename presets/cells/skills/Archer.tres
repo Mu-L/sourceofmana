@@ -27,6 +27,7 @@ state = 3
 cellRange = 100
 repeat = true
 projectilePreset = ExtResource("4_xq8n7")
+id = 2814726266
 name = "Archer"
 description = "A simple bow attack, shoot one arrow at a time."
 icon = ExtResource("1_obmo8")

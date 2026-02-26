@@ -30,6 +30,7 @@ script = ExtResource("7_tt4oe")
 cellRange = 64
 cooldownTime = 3.0
 projectilePreset = ExtResource("4_p83gv")
+id = 123697108
 name = "Sonic Wave"
 description = "Releases a blue sonic wave that deals damage forward."
 icon = ExtResource("1_lb5c4")

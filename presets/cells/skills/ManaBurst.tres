@@ -36,6 +36,7 @@ castTime = 2.0
 castWalk = true
 skillTime = 2.0
 projectilePreset = ExtResource("5_703aq")
+id = 2393790290
 name = "Mana Burst"
 description = "Unleash a mana-fueled attack, creating a focused circle of concentrated mana around you."
 icon = ExtResource("1_lskrc")

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_ppih2")
+id = 2089042143
 name = "Dots"
 icon = ExtResource("1_vupho")
 type = 1

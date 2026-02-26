@@ -28,6 +28,7 @@ script = ExtResource("2_i26ks")
 slot = 6
 textures = Array[Texture2D]([ExtResource("3_tr6hd"), ExtResource("3_tr6hd"), ExtResource("3_tr6hd")])
 shader = ExtResource("3_uxtf6")
+id = 4119861718
 name = "Bone Knife"
 description = "A knife made from bones. Quite effective."
 icon = ExtResource("1_uvles")

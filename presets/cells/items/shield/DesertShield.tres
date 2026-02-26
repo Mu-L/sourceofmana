@@ -29,6 +29,7 @@ script = ExtResource("4_hvw28")
 slot = 7
 textures = Array[Texture2D]([ExtResource("6_x1j1u"), ExtResource("7_ehmcs"), ExtResource("6_x1j1u")])
 shader = ExtResource("5_cm80u")
+id = 2831561157
 name = "Desert Shield"
 icon = ExtResource("1_cm80u")
 weight = 400.0

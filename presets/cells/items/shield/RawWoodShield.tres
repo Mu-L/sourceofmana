@@ -27,6 +27,7 @@ _modifiers = Array[ExtResource("2_cre1y")]([SubResource("Resource_hp128"), SubRe
 script = ExtResource("2_wtls8")
 slot = 7
 textures = Array[Texture2D]([ExtResource("3_ob0li"), ExtResource("4_th14s"), ExtResource("3_ob0li")])
+id = 2754674049
 name = "Raw Wood Shield"
 icon = ExtResource("1_p2nnm")
 weight = 400.0

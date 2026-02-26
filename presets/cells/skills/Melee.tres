@@ -23,6 +23,7 @@ _modifiers = Array[ExtResource("2_yjg4f")]([SubResource("Resource_ecwg5"), SubRe
 script = ExtResource("5_obt75")
 state = 3
 repeat = true
+id = 229218829
 name = "Melee"
 description = "Close combat attack."
 icon = ExtResource("3_trswl")

@@ -23,6 +23,7 @@ script = ExtResource("4_kipan")
 slot = 3
 textures = Array[Texture2D]([ExtResource("6_tmfg1"), ExtResource("7_qudaj"), ExtResource("6_tmfg1")])
 shader = ExtResource("5_smcxc")
+id = 1633134452
 name = "Desert Armbands"
 icon = ExtResource("1_smcxc")
 weight = 300.0

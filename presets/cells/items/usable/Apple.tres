@@ -16,6 +16,7 @@ _modifiers = Array[ExtResource("2_g4j6d")]([SubResource("Resource_y0bgm")])
 
 [resource]
 script = ExtResource("1_66yfp")
+id = 215387671
 name = "Apple"
 description = "A crisp red apple known for its refreshing taste and vitality-boosting properties."
 icon = ExtResource("1_cplo6")

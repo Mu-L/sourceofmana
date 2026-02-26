@@ -35,6 +35,7 @@ cooldownTime = 1.0
 castPreset = ExtResource("1_nuwi7")
 skillTime = 0.1
 projectilePreset = ExtResource("4_65neb")
+id = 3219153995
 name = "Spitfire"
 description = "Cast a fire spray"
 icon = ExtResource("1_ns67t")

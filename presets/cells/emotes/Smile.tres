@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_m5drp")
+id = 236618815
 name = "Smile"
 icon = ExtResource("1_iaobf")
 type = 1

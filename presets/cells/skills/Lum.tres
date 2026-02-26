@@ -34,6 +34,7 @@ castPreset = ExtResource("1_hjeau")
 castTime = 2.0
 skillPreset = ExtResource("5_me0na")
 skillTime = 2.0
+id = 193463731
 name = "Lum"
 description = "Heal yourself with a burst of restorative energy."
 icon = ExtResource("3_uxkv0")

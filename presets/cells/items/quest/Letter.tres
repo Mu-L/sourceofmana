@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("2_6b5vw")
 slot = 11
+id = 3230422613
 name = "Letter"
 description = "A stamped letter given for a specific quest."
 icon = ExtResource("1_jk2eh")

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_v0qjy")
+id = 2850928111
 name = "Bottle"
 description = "An empty glass bottle, ready to be filled with whatever the world has to offer."
 icon = ExtResource("1_mc4ws")

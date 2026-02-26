@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 slot = 11
+id = 1577372888
 name = "Thief's Key"
 description = "A tarnished key found in the snake pit."
 icon = ExtResource("1_epkb0")

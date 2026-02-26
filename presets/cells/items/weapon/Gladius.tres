@@ -28,6 +28,7 @@ script = ExtResource("2_brecq")
 slot = 6
 textures = Array[Texture2D]([ExtResource("3_1lytf"), ExtResource("3_1lytf"), ExtResource("3_1lytf")])
 shader = ExtResource("3_vtm0f")
+id = 1613203406
 name = "Gladius"
 icon = ExtResource("1_hu2iu")
 weight = 400.0
