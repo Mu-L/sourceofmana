@@ -10,6 +10,7 @@ _parent = ExtResource("2_k000k")
 _id = 2089394763
 _name = "Nina"
 _equipment = Array[ExtResource("1_cphxd")]([null, null, null, null, null, null, null, null])
+_customTexture = "sprites/npcs/nina.png"
 _stats = {
 "level": 1
 }

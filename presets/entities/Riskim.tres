@@ -10,6 +10,7 @@ _parent = ExtResource("2_jvyv1")
 _id = 3469933044
 _name = "Riskim"
 _equipment = Array[ExtResource("1_ogvrf")]([null, null, null, null, null, null, null, null])
+_customTexture = "sprites/npcs/riskim.png"
 _stats = {
 "level": 1
 }

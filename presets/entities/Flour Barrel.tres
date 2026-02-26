@@ -10,6 +10,7 @@ _parent = ExtResource("2_3d05s")
 _id = 1902637957
 _name = "Flour Barrel"
 _equipment = Array[ExtResource("1_oghli")]([null, null, null, null, null, null, null, null])
+_customTexture = "sprites/npcs/flour-barrel.png"
 _stats = {
 "level": 1
 }

@@ -10,6 +10,7 @@ _parent = ExtResource("2_xwl2d")
 _id = 219944129
 _name = "Ekinu"
 _equipment = Array[ExtResource("1_tcmrs")]([null, null, null, null, null, null, null, null])
+_customTexture = "sprites/npcs/ekinu.png"
 _stats = {
 "level": 1
 }

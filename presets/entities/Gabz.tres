@@ -10,6 +10,7 @@ _parent = ExtResource("2_h5tkl")
 _id = 2089134121
 _name = "Gabz"
 _equipment = Array[ExtResource("1_cekxu")]([null, null, null, null, null, null, null, null])
+_customTexture = "sprites/npcs/gabz.png"
 _stats = {
 "level": 1
 }
