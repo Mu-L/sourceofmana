@@ -23,6 +23,12 @@ func RegisterCommands():
 	CommandManager.Register("killall", CommandKillAll, ActorCommons.Permission.ADMIN, "killall <filter>" )
 	CommandManager.Register("kill", CommandKill, ActorCommons.Permission.MODERATOR, "kill <nick>" )
 	CommandManager.Register("revive", CommandRevive, ActorCommons.Permission.MODERATOR, "revive <nick>" )
+	CommandManager.Register("permission", CommandPermission, ActorCommons.Permission.ADMIN, "permission <player_name> <level>, with level: None=0, Moderator=1, GM=2, Admin=3" )
+	CommandManager.Register("ipcheck", CommandIpCheck, ActorCommons.Permission.MODERATOR, "ipcheck <player_name>" )
+	CommandManager.Register("kick", CommandKick, ActorCommons.Permission.MODERATOR, "kick <player_name>" )
+	CommandManager.Register("ban", CommandBan, ActorCommons.Permission.GM, "ban <player_name> <time>" )
+	CommandManager.Register("unban", CommandUnban, ActorCommons.Permission.GM, "unban <player_name>" )
+	CommandManager.Register("banlist", CommandBanList, ActorCommons.Permission.MODERATOR, "banlist <filter>" )
 
 static func UnregisterCommands():
 	CommandManager.Unregister("spawn")
@@ -45,6 +51,12 @@ static func UnregisterCommands():
 	CommandManager.Unregister("killall")
 	CommandManager.Unregister("kill")
 	CommandManager.Unregister("revive")
+	CommandManager.Unregister("permission")
+	CommandManager.Unregister("ipcheck")
+	CommandManager.Unregister("kick")
+	CommandManager.Unregister("ban")
+	CommandManager.Unregister("unban")
+	CommandManager.Unregister("banlist")
 
 # Spawn 'x' times a specific monster near the calling player
 func CommandSpawn(caller : PlayerAgent, entityName : String, countStr : String = "1") -> bool:
@@ -79,19 +91,17 @@ func CommandWarp(caller : PlayerAgent, mapName : String, positionXStr : String =
 	return false
 
 # Warp the current player to a specific map
-func CommandGoto(caller : PlayerAgent, agentName : String) -> bool:
+func CommandGoto(caller : PlayerAgent, nickname : String) -> bool:
 	if not caller:
 		return false
 
-	for areaIdx in Launcher.World.areas:
-		var area = Launcher.World.areas[areaIdx]
-		for inst in area.instances:
-			for player in inst.players:
-				if player.nick == agentName:
-					Launcher.World.Warp(caller, area, player.position)
-					return true
+	var target : PlayerAgent = Launcher.World.GetGlobalPlayer(nickname)
+	if not target:
+		Network.CommandFeedback("Player '%s' is disconnected" % nickname, caller.peerID)
+		return false
 
-	return false
+	Launcher.World.Warp(caller, WorldAgent.GetMapFromAgent(target), target.position)
+	return true
 
 # Modifiers
 func CommandGodmode(caller : PlayerAgent, toggleStr : String) -> bool:
@@ -233,3 +243,139 @@ func CommandRevive(caller : PlayerAgent, nick : String) -> bool:
 				player.Revive()
 				return true
 	return false
+
+# Admin
+func CommandPermission(caller : PlayerAgent, nickname : String, levelStr : String) -> bool:
+	if not caller:
+		return false
+
+	var level : int = levelStr.to_int()
+	if level < ActorCommons.Permission.NONE or level > ActorCommons.Permission.ADMIN:
+		Network.CommandFeedback("Invalid permission level, must be between %d and %d" % [ActorCommons.Permission.NONE, ActorCommons.Permission.ADMIN], caller.peerID)
+		return false
+
+	var accountID : int = GetAccountID(nickname)
+	if accountID == NetworkCommons.PeerUnknownID:
+		Network.CommandFeedback("Character '%s' not found" % nickname, caller.peerID)
+		return false
+
+	return Launcher.SQL.SetPermission(accountID, level)
+
+func CommandIpCheck(caller : PlayerAgent, nickname : String) -> bool:
+	if not caller:
+		return false
+
+	var target : PlayerAgent = Launcher.World.GetGlobalPlayer(nickname)
+	if not target:
+		Network.CommandFeedback("Player '%s' is disconnected" % nickname, caller.peerID)
+		return false
+
+	var peer : Peers.Peer = Peers.GetPeer(target.peerID)
+	if not peer:
+		Network.CommandFeedback("Player '%s' is disconnected" % nickname, caller.peerID)
+		return false
+
+	var ip : String = "unavailable"
+	if peer.usingWebSocket and Network.WebSocketServer:
+		var packetPeer : PacketPeer = Network.WebSocketServer.currentPeer.get_peer(target.peerID)
+		if packetPeer and packetPeer is WebSocketPeer:
+			ip = packetPeer.get_connected_host()
+	elif Network.ENetServer:
+		var packetPeer : PacketPeer = Network.ENetServer.currentPeer.get_peer(target.peerID)
+		if packetPeer and packetPeer is ENetPacketPeer:
+			ip = packetPeer.get_remote_address()
+
+	Network.CommandFeedback("IP for '%s': %s" % [nickname, ip], caller.peerID)
+	return true
+
+# Moderation
+func CommandKick(caller : PlayerAgent, nickname : String) -> bool:
+	if not caller:
+		return false
+
+	var target : PlayerAgent = Launcher.World.GetGlobalPlayer(nickname)
+	if not target or target.peerID == NetworkCommons.PeerUnknownID:
+		Network.CommandFeedback("Player '%s' is not online" % nickname, caller.peerID)
+		return false
+
+	if target.peerID == caller.peerID:
+		Network.CommandFeedback("Cannot kick yourself", caller.peerID)
+		return false
+
+	var server : NetServer = Peers.GetAssociatedNetServer(target.peerID)
+	if not server or not server.multiplayerAPI:
+		Network.CommandFeedback("Missing peer information for '%s'" % nickname, caller.peerID)
+		return false
+
+	server.multiplayerAPI.disconnect_peer(target.peerID)
+	server.DisconnectPeer(target.peerID)
+	Network.CommandFeedback("'%s' kicked" % nickname, caller.peerID)
+	return true
+
+func CommandBan(caller : PlayerAgent, nickname : String, durationStr : String = "1d") -> bool:
+	if not caller:
+		return false
+
+	var accountID : int = GetAccountID(nickname)
+	if accountID == NetworkCommons.PeerUnknownID:
+		Network.CommandFeedback("Character '%s' not found" % nickname, caller.peerID)
+		return false
+
+	var duration : int = Util.ParseDuration(durationStr)
+	if duration <= 0:
+		Network.CommandFeedback("Couldn't parse the duration", caller.peerID)
+		return false
+
+	var unbanTimestamp : int = SQLCommons.Timestamp() + duration
+	if not Launcher.SQL.BanAccount(accountID, unbanTimestamp):
+		Network.CommandFeedback("Ban registration failed", caller.peerID)
+		return false
+
+	Peers.bannedAccounts[accountID] = unbanTimestamp
+
+	var target : PlayerAgent = Launcher.World.GetGlobalPlayer(nickname)
+	if target:
+		CommandKick(caller, nickname)
+
+	Network.CommandFeedback("'%s' banned for %s" % [nickname, durationStr], caller.peerID)
+	return true
+
+func CommandUnban(caller : PlayerAgent, nickname : String) -> bool:
+	if not caller:
+		return false
+
+	var accountID : int = Launcher.SQL.GetAccountID(nickname)
+	if accountID == NetworkCommons.PeerUnknownID:
+		Network.CommandFeedback("Player '%s' not found" % nickname, caller.peerID)
+		return false
+
+	if not Peers.bannedAccounts.has(accountID):
+		Network.CommandFeedback("Player '%s' is not banned" % nickname, caller.peerID)
+		return false
+
+	Launcher.SQL.UnbanAccount(accountID)
+	Peers.bannedAccounts.erase(accountID)
+	return true
+
+func CommandBanList(caller : PlayerAgent, filter : String = "") -> bool:
+	if not caller:
+		return false
+
+	var results : Array[Dictionary] = Launcher.SQL.GetBanList(filter)
+	if results.is_empty():
+		Network.CommandFeedback("No active bans found", caller.peerID)
+		return true
+
+	var now : int = SQLCommons.Timestamp()
+	for row in results:
+		var username : String = row.get("username", "unknown")
+		var remaining : int = row.get("unban_timestamp", 0) - now
+		Network.CommandFeedback("%s: %s remaining" % [username, Util.FormatDuration(remaining)], caller.peerID)
+	return true
+
+# Helpers
+static func GetAccountID(nickname : String) -> int:
+	var target : PlayerAgent = Launcher.World.GetGlobalPlayer(nickname)
+	if target:
+		return Peers.GetAccount(target.peerID)
+	return Launcher.SQL.GetAccountID(nickname)

@@ -98,3 +98,47 @@ static func GetPlatformName() -> String:
 	if LauncherCommons.isWeb and IsMobile():
 		return "Android"
 	return OS.get_name()
+
+# Delay
+static func ParseDuration(durationStr : String) -> int:
+	var totalSeconds : int = 0
+	var currentNumber : String = ""
+
+	for c in durationStr:
+		if c.is_valid_int():
+			currentNumber += c
+		else:
+			var value : int = currentNumber.to_int() if not currentNumber.is_empty() else 0
+			currentNumber = ""
+			match c:
+				"y":
+					totalSeconds += value * 365 * 24 * 3600
+				"d":
+					totalSeconds += value * 24 * 3600
+				"h":
+					totalSeconds += value * 3600
+				"m":
+					totalSeconds += value * 60
+				"s":
+					totalSeconds += value
+
+	return totalSeconds if totalSeconds > 0 else 3600
+
+static func FormatDuration(seconds : int) -> String:
+	var years : int = floori(seconds / (365.0 * 24.0 * 3600.8))
+	seconds -= years * 365 * 24 * 3600
+	var days : int = floori(seconds / (24.0 * 3600.0))
+	seconds -= days * 24 * 3600
+	var hours : int = floori(seconds / 3600.0)
+	seconds -= hours * 3600
+	var minutes : int = floori(seconds / 60.0)
+	seconds -= minutes * 60
+
+	return "%s%s%s%s%s" % \
+	[ \
+		"%dy" % years if years > 0 else "", \
+		"%dd" % days if days > 0 else "", \
+		"%dh" % hours if hours > 0 else "", \
+		"%dm" % minutes if minutes > 0 else "", \
+		"%ds" % seconds if seconds > 0 else "", \
+	]

@@ -10,8 +10,8 @@ signal online_agents_update
 
 #
 var Client							= null
-var ENetServer						= null
-var WebSocketServer					= null
+var ENetServer : NetServer			= null
+var WebSocketServer : NetServer		= null
 
 enum EChannel
 {

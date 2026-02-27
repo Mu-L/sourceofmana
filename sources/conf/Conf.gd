@@ -19,7 +19,7 @@ static func GetCacheID(section : String, key : String, type : Type) -> String:
 	return "%s%s%d" % [section, key, type]
 
 static func GetVariant(section : String, key : String, type : Type, default = null):
-	if not confFiles[type] or type >= Type.COUNT:
+	if type >= Type.COUNT or not confFiles[type]:
 		assert(false, "Config type is not valid, returning default value")
 		return default
 

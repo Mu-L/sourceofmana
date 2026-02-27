@@ -30,6 +30,9 @@ func ConnectAccount(accountName : String, password : String, peerID : int):
 			peer.SetAccount(Launcher.SQL.Login(accountName, password))
 			if peer.accountID == NetworkCommons.PeerUnknownID:
 				err = NetworkCommons.AuthError.ERR_AUTH
+			elif Peers.IsBanned(peer.accountID):
+				peer.SetAccount(Peers.DisconnectedAccount)
+				err = NetworkCommons.AuthError.ERR_BANNED
 			else:
 				Launcher.SQL.UpdateAccount(peer.accountID)
 	Network.AuthError(err, peerID)

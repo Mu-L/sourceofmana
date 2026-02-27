@@ -55,6 +55,16 @@ class Peer:
 
 static var peers : Dictionary[int, Peer]			= {}
 static var accounts : Dictionary[int, int]			= {}
+static var bannedAccounts : Dictionary[int, int]	= {}
+
+# Moderation
+static func IsBanned(accountID : int) -> bool:
+	var unbanTimestamp : int = bannedAccounts.get(accountID, 0)
+	if unbanTimestamp > 0:
+		if unbanTimestamp > int(Time.get_unix_time_from_system()):
+			return true
+		bannedAccounts.erase(accountID)
+	return false
 
 # Handling
 static func AddPeer(peerID : int, usingWebSocket : bool):
@@ -70,7 +80,6 @@ static func RemovePeer(peerID : int):
 
 static func Footprint(peerID : int, methodName : StringName, actionDelta : int) -> bool:
 	var peer : Peers.Peer = GetPeer(peerID)
-	assert(peer, "Could not find data related to this peer: " + str(peerID))
 	if peer:
 		var oldTick : int = 0
 		if methodName in peers[peerID].rpcDeltas:
@@ -86,6 +95,11 @@ static func Footprint(peerID : int, methodName : StringName, actionDelta : int) 
 static func IsUsingWebSocket(peerID : int) -> bool:
 	var peer : Peers.Peer = GetPeer(peerID)
 	return peer.usingWebSocket if peer else false
+
+static func GetAssociatedNetServer(peerID : int) -> NetServer:
+	if HasPeer(peerID):
+		return Network.WebSocketServer if IsUsingWebSocket(peerID) else Network.ENetServer
+	return null
 
 # Info getters
 static func HasPeer(peerID : int) -> bool:

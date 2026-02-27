@@ -16,6 +16,14 @@ func CanWarp(agent : BaseAgent) -> WarpObject:
 func GetMap(mapID : int) -> WorldMap:
 	return areas.get(mapID, null)
 
+func GetGlobalPlayer(nickname : String) -> PlayerAgent:
+	for areaIdx in areas:
+		var area = areas[areaIdx]
+		for inst in area.instances:
+			for player in inst.players:
+				if player.nick == nickname:
+					return player
+	return null
 # Core functions
 func Warp(agent : BaseAgent, newMap : WorldMap, newPos : Vector2i, instanceID : int = 0):
 	assert(newMap != null and agent != null, "Warp could not proceed, agent or new map missing")

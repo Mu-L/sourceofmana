@@ -365,6 +365,45 @@ func SetQuest(charID : int, questID : int, value : int) -> bool:
 func GetQuests(charID : int) -> Array[Dictionary]:
 	return db.select_rows("quest", "char_id = %d" % [charID], ["*"])
 
+# Ban
+func BanAccount(accountID : int, unbanTimestamp : int) -> bool:
+	var results : Array[Dictionary] = db.select_rows("ban", "account_id = %d" % accountID, ["*"])
+	var data : Dictionary = {
+		"account_id": accountID,
+		"banned_timestamp": SQLCommons.Timestamp(),
+		"unban_timestamp": unbanTimestamp,
+	}
+	if not results.is_empty():
+		return db.update_rows("ban", "account_id = %d" % accountID, data)
+	return db.insert_row("ban", data)
+
+func UnbanAccount(accountID : int) -> bool:
+	return db.delete_rows("ban", "account_id = %d" % accountID)
+
+func LoadBans() -> Dictionary[int, int]:
+	var bans : Dictionary[int, int] = {}
+	var now : int = SQLCommons.Timestamp()
+	var results : Array[Dictionary] = Query("SELECT account_id, unban_timestamp FROM ban WHERE unban_timestamp > %d;" % now)
+	for row in results:
+		bans[row["account_id"]] = row["unban_timestamp"]
+	return bans
+
+func GetAccountID(username : String) -> int:
+	var results : Array[Dictionary] = QueryBindings("SELECT account_id FROM account WHERE username = ?;", [username])
+	if not results.is_empty():
+		return results[0].get("account_id", NetworkCommons.PeerUnknownID)
+	return NetworkCommons.PeerUnknownID
+
+func SetPermission(accountID : int, permission : int) -> bool:
+	var data : Dictionary = { "permission": permission }
+	return db.update_rows("account", "account_id = %d" % accountID, data)
+
+func GetBanList(filter : String = "") -> Array[Dictionary]:
+	var now : int = SQLCommons.Timestamp()
+	if filter.is_empty():
+		return Query("SELECT ban.account_id, account.username, ban.unban_timestamp FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > %d;" % now)
+	return QueryBindings("SELECT ban.account_id, account.username, ban.unban_timestamp FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > ? AND account.username LIKE ?;", [now, "%" + filter + "%"])
+
 # Commons
 func Query(query : String) -> Array[Dictionary]:
 	var data : Array[Dictionary] = []
@@ -402,6 +441,7 @@ func _post_launch():
 			backups = SQLBackups.new()
 
 	ApplyMigrations()
+	Peers.bannedAccounts = LoadBans()
 
 	isInitialized = true
 
@@ -414,6 +454,7 @@ func Destroy():
 func Wipe():
 	db.delete_rows("account", "")
 	db.delete_rows("attribute", "")
+	db.delete_rows("ban", "")
 	db.delete_rows("bestiary", "")
 	db.delete_rows("character", "")
 	db.delete_rows("equipment", "")
