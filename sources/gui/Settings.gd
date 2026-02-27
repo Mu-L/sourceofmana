@@ -19,9 +19,10 @@ const userSection : String						= "User"
 	"Session-FirstLogin": [init_sessionfirstlogin, set_sessionfirstlogin, apply_sessionfirstlogin, null],
 	"Session-Overlay": [init_sessionoverlay, set_sessionoverlay, apply_sessionoverlay, null],
 	"Session-ShortcutCells": [init_shortcutcells, set_shortcutcells, apply_shortcutcells, null],
+	"Input-Bindings": [init_inputbindings, null, null, null],
 }
 
-enum CATEGORY { RENDER, SOUND, COUNT }
+enum CATEGORY { RENDER, SOUND, INPUT, COUNT }
 enum ACC_TYPE { INIT, SET, APPLY, LABEL }
 
 # MinWindowSize
@@ -286,6 +287,11 @@ func apply_shortcutcells(cells : Array):
 						cells.erase(cellInfo)
 						break
 
+# Input Bindings
+func init_inputbindings(apply : bool):
+	if apply:
+		InputBindings.LoadBindings()
+
 #
 func _on_visibility_changed():
 	RefreshSettings(false)
@@ -311,6 +317,7 @@ func SaveSettings():
 	save_sessionoverlay()
 	save_windowPos()
 	save_shortcutcells()
+	InputBindings.SaveBindings()
 	Conf.SaveType("settings", Conf.Type.USERSETTINGS)
 
 func SetVal(key : String, value):
