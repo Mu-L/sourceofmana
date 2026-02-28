@@ -26,7 +26,7 @@ func RegisterCommands():
 	CommandManager.Register("permission", CommandPermission, ActorCommons.Permission.ADMIN, "permission <player_name> <level>, with level: None=0, Moderator=1, GM=2, Admin=3" )
 	CommandManager.Register("ipcheck", CommandIpCheck, ActorCommons.Permission.MODERATOR, "ipcheck <player_name>" )
 	CommandManager.Register("kick", CommandKick, ActorCommons.Permission.MODERATOR, "kick <player_name>" )
-	CommandManager.Register("ban", CommandBan, ActorCommons.Permission.GM, "ban <player_name> <time>" )
+	CommandManager.Register("ban", CommandBan, ActorCommons.Permission.GM, "ban <player_name> <time> <reason>" )
 	CommandManager.Register("unban", CommandUnban, ActorCommons.Permission.GM, "unban <player_name>" )
 	CommandManager.Register("banlist", CommandBanList, ActorCommons.Permission.MODERATOR, "banlist <filter>" )
 
@@ -312,7 +312,7 @@ func CommandKick(caller : PlayerAgent, nickname : String) -> bool:
 	Network.CommandFeedback("'%s' kicked" % nickname, caller.peerID)
 	return true
 
-func CommandBan(caller : PlayerAgent, nickname : String, durationStr : String = "1d") -> bool:
+func CommandBan(caller : PlayerAgent, nickname : String, durationStr : String = "1d", reason : String = "") -> bool:
 	if not caller:
 		return false
 
@@ -327,7 +327,7 @@ func CommandBan(caller : PlayerAgent, nickname : String, durationStr : String = 
 		return false
 
 	var unbanTimestamp : int = SQLCommons.Timestamp() + duration
-	if not Launcher.SQL.BanAccount(accountID, unbanTimestamp):
+	if not Launcher.SQL.BanAccount(accountID, unbanTimestamp, reason):
 		Network.CommandFeedback("Ban registration failed", caller.peerID)
 		return false
 
@@ -370,7 +370,11 @@ func CommandBanList(caller : PlayerAgent, filter : String = "") -> bool:
 	for row in results:
 		var username : String = row.get("username", "unknown")
 		var remaining : int = row.get("unban_timestamp", 0) - now
-		Network.CommandFeedback("%s: %s remaining" % [username, Util.FormatDuration(remaining)], caller.peerID)
+		var banReason : String = row.get("reason", "")
+		if banReason.is_empty():
+			Network.CommandFeedback("%s: %s remaining" % [username, Util.FormatDuration(remaining)], caller.peerID)
+		else:
+			Network.CommandFeedback("%s: %s remaining (%s)" % [username, Util.FormatDuration(remaining), banReason], caller.peerID)
 	return true
 
 # Helpers

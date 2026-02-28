@@ -366,12 +366,13 @@ func GetQuests(charID : int) -> Array[Dictionary]:
 	return db.select_rows("quest", "char_id = %d" % [charID], ["*"])
 
 # Ban
-func BanAccount(accountID : int, unbanTimestamp : int) -> bool:
+func BanAccount(accountID : int, unbanTimestamp : int, reason : String = "") -> bool:
 	var results : Array[Dictionary] = db.select_rows("ban", "account_id = %d" % accountID, ["*"])
 	var data : Dictionary = {
 		"account_id": accountID,
 		"banned_timestamp": SQLCommons.Timestamp(),
 		"unban_timestamp": unbanTimestamp,
+		"reason": reason,
 	}
 	if not results.is_empty():
 		return db.update_rows("ban", "account_id = %d" % accountID, data)
@@ -401,8 +402,8 @@ func SetPermission(accountID : int, permission : int) -> bool:
 func GetBanList(filter : String = "") -> Array[Dictionary]:
 	var now : int = SQLCommons.Timestamp()
 	if filter.is_empty():
-		return Query("SELECT ban.account_id, account.username, ban.unban_timestamp FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > %d;" % now)
-	return QueryBindings("SELECT ban.account_id, account.username, ban.unban_timestamp FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > ? AND account.username LIKE ?;", [now, "%" + filter + "%"])
+		return Query("SELECT ban.account_id, account.username, ban.unban_timestamp, ban.reason FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > %d;" % now)
+	return QueryBindings("SELECT ban.account_id, account.username, ban.unban_timestamp, ban.reason FROM ban INNER JOIN account ON ban.account_id = account.account_id WHERE ban.unban_timestamp > ? AND account.username LIKE ?;", [now, "%" + filter + "%"])
 
 # Commons
 func Query(query : String) -> Array[Dictionary]:
